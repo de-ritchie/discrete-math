@@ -58,10 +58,12 @@ def count(matrix):
         for j in range(len(matrix[i])):
             if matrix[i][j] == 1 or matrix[i][j] == 2 :
                 count+=1
-    print('count', count)
+    # print('count', count)
     return count
 
 def checkMatrix(matrix) :
+
+    # print('check matrix', matrix)
     for i in range(len(matrix)) :
         for j in range(len(matrix[i])) :
             # print(matrix[i][j])
@@ -85,8 +87,30 @@ def permute(perm, i, n, result) :
         perm[i] = 2
         permute(perm, i+1, n, result)
         
+def backtrack(i, n, list, tmp, countMap) :
+    
+    if i >= n :
+        tmpCount = count(tmp)
+        if countMap['count'] <= tmpCount :
+            if countMap['count'] == tmpCount :
+                countMap['values'].append(copy.deepcopy(tmp))
+            else :
+                countMap['values'] = copy.deepcopy(tmp)
+            countMap['count'] = tmpCount
+        # print('base case', tmp)
+        print('base case', tmp, tmpCount)
+        return
+    for ele in list :
+
+        # print(i, ele, tmp)
+        tmp.append(ele)
+        if checkMatrix(tmp) :
+            backtrack(i+1, n, list, tmp, countMap)
+        tmp.pop()
 
 def isValid(matrix, i, j, type):
+
+    # print(matrix, i, j, type)
     n = len(matrix)
     if type == 1 :
         if i-1 >= 0 :
@@ -131,7 +155,7 @@ def isValid(matrix, i, j, type):
         
     return True
 
-n = 5
+n = 2
 matrix = [[0 for x in range(n)] for y in range(n)]
 matrix = clearMatrix(matrix, n, -1)
 result = []
@@ -143,21 +167,19 @@ for i in range(n) :
 countMap = {'count': 0, 'values': []}
 permute(perm, 0, n, result)
 
-for i in result :
-    for j in result :
-        for k in result :
-            for p in result :
-                for q in result :
-            # print('====', i, j, k)
-                    if checkMatrix([i, j, k, p, q]) :
-                        tmp = count([i, j, k, p, q])
-                        if countMap['count'] <= tmp :
-                            if countMap['count'] == tmp :
-                                countMap['values'].append([i, j, k, p, q])
-                            else :
-                                countMap['values'] = [i, j, k, p, q]
-                                countMap['count'] = tmp
+backtrack(0, n, result, [], countMap)
+# for i in result :
+#     for j in result :
+#         # print('====', i, j, k)
+#         if checkMatrix([i, j]) :
+#             tmp = count([i, j])
+#             if countMap['count'] <= tmp :
+#                 if countMap['count'] == tmp :
+#                     countMap['values'].append([i, j])
+#                 else :
+#                     countMap['values'] = [i, j]
+#                     countMap['count'] = tmp
 
-                        print('---====---', [i, j, k, p, q], tmp)
+#             print('---====---', [i, j], tmp)
 
-print(matrix, 'count Map', countMap, perm, result)
+print(matrix, 'count Map', countMap, perm, len(result))
