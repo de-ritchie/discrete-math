@@ -43,6 +43,7 @@
 """
 
 import copy
+import time
 
 def clearMatrix (matrix, n, val):
 
@@ -155,7 +156,7 @@ def isValid(matrix, i, j, type):
         
     return True
 
-n = 2
+n = 5
 matrix = [[0 for x in range(n)] for y in range(n)]
 matrix = clearMatrix(matrix, n, -1)
 result = []
@@ -165,9 +166,11 @@ for i in range(n) :
     perm.append(0)
 
 countMap = {'count': 0, 'values': []}
+t1 = time.time()
 permute(perm, 0, n, result)
-
 backtrack(0, n, result, [], countMap)
+t2 = time.time()
+print(countMap, t2 - t1)
 # for i in result :
 #     for j in result :
 #         # print('====', i, j, k)
@@ -182,4 +185,4 @@ backtrack(0, n, result, [], countMap)
 
 #             print('---====---', [i, j], tmp)
 
-print(matrix, 'count Map', countMap, perm, len(result))
+# print(matrix, 'count Map', countMap, perm, len(result))
